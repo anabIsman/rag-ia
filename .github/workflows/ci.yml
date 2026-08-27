@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_DB: ragdb_test
+          POSTGRES_USER: raguser
+          POSTGRES_PASSWORD: changeme
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U raguser -d ragdb_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+      redis:
+        image: redis:7-alpine
+        ports: ["6379:6379"]
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      DJANGO_SECRET_KEY: ci-secret
+      DEBUG: "False"
+      POSTGRES_DB: ragdb_test
+      POSTGRES_USER: raguser
+      POSTGRES_PASSWORD: changeme
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5432
+      REDIS_URL: redis://localhost:6379/0
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Lint (ruff)
+        run: ruff check .
+
+      - name: Run tests
+        run: pytest
+
+      # Placeholders pour les étapes futures du pipeline (cahier, section 13/20) :
+      # - pip-audit (socle non négociable réduit)
+      # - Bandit, scan Trivy (bonus, cf. plan de repli section 20)
+      # - build & push de l'image Docker vers le registre, déploiement OVH
