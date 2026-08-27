@@ -1,5 +1,6 @@
 # RAG-ai
 
+Projet portfolio — voir `Cahier-des-charges-Assistant-IA-RAG-v4.2.docx` pour le cahier des charges complet (verrouillé).
 
 ## Stack
 
@@ -15,7 +16,7 @@
 ## Démarrer en local
 
 ```bash
-cp .env.example .env     
+cp .env.example .env
 docker compose build
 docker compose up
 ```
@@ -37,18 +38,3 @@ docker compose run --rm web pytest
 ```
 
 ## Structure
-
-```
-config/            # settings Django, Celery, urls
-apps/documents/     # upload, statut d'ingestion (F1/F2)
-apps/retrieval/     # recherche hybride (F3) — à implémenter
-apps/chat/          # chat, citations, refus explicite (F4-F6) — à implémenter
-```
-
-## Prochaines étapes (semaine 1, cf. cahier section 15)
-
-1. Migration initiale (`Document`, `DocumentChunk`).
-2. Implémenter le parsing PDF/DOCX dans `ingest_document` (pypdf / python-docx).
-3. Chunking + calcul des embeddings (`sentence-transformers`, modèle `intfloat/multilingual-e5-small`).
-4. Indexation vectorielle (pgvector) + lexicale (PostgreSQL FTS).
-5. Premiers tests manuels sur documents courts.
