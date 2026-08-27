@@ -1,8 +1,5 @@
 # RAG-ai
 
-Projet portfolio — voir `Cahier-des-charges-Assistant-IA-RAG-v4.2.docx` pour le cahier des charges complet (verrouillé).
-
-**Statut actuel : semaine 1 — setup + squelette d'ingestion.** Le pipeline d'ingestion (`apps/documents/tasks.py`) n'est pas encore implémenté (parsing, chunking, embeddings, indexation) — c'est la prochaine étape.
 
 ## Stack
 
@@ -18,7 +15,7 @@ Projet portfolio — voir `Cahier-des-charges-Assistant-IA-RAG-v4.2.docx` pour l
 ## Démarrer en local
 
 ```bash
-cp .env.example .env      # puis éditer les valeurs
+cp .env.example .env     
 docker compose build
 docker compose up
 ```
